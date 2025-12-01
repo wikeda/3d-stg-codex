@@ -21,9 +21,12 @@ export function createEnemy(type: EnemyType, stageSpeed: number, resources: Enem
   const material = new THREE.MeshStandardMaterial({
     color: enemyColor(type),
     flatShading: true,
-    metalness: 0.1,
-    roughness: 0.6,
+    metalness: 0.05,
+    roughness: 0.35,
+    emissive: new THREE.Color(0x0b0e1f),
+    emissiveIntensity: 0.35,
   })
+  const outline = new THREE.Mesh(resources.geometry, new THREE.MeshBasicMaterial({ color: 0x0b0e1f, side: THREE.BackSide }))
   let hp = 1
   let speed = 20 * stageSpeed
   let radius = 1.2
@@ -36,7 +39,9 @@ export function createEnemy(type: EnemyType, stageSpeed: number, resources: Enem
       break
   }
   const enemy = new Enemy(type, hp, radius, speed, resources.geometry, material)
-  enemy.mesh.scale.set(0.08, 0.08, 0.06)
+  enemy.mesh.scale.set(0.1, 0.1, 0.08)
+  outline.scale.copy(enemy.mesh.scale).multiplyScalar(1.08)
+  enemy.mesh.add(outline)
   return enemy
 }
 

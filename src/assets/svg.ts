@@ -3,22 +3,23 @@
 export const playerSvg = `
 <svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="heroBody" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#61b0ff"/>
-      <stop offset="100%" stop-color="#2c6bff"/>
+    <linearGradient id="heroCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6de1ff"/>
+      <stop offset="100%" stop-color="#1f66ff"/>
     </linearGradient>
-    <linearGradient id="heroTrail" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#9be8ff" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#2c6bff" stop-opacity="0"/>
+    <linearGradient id="heroJet" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd166"/>
+      <stop offset="100%" stop-color="#ff6b6b"/>
     </linearGradient>
   </defs>
-  <g fill="none" stroke="#0d1b3f" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M128 24 L148 60 L132 74 L142 94 L126 112 L110 94 L120 74 L104 60 Z" fill="url(#heroBody)"/>
-    <path d="M128 112 C140 136 146 166 146 196 L110 196 C110 166 116 136 128 112 Z" fill="#f5c78b"/>
-    <path d="M128 196 L156 232 L100 232 Z" fill="url(#heroTrail)" stroke="#2c6bff" stroke-width="4" />
-    <circle cx="128" cy="50" r="10" fill="#f9d29d" />
-    <path d="M124 46 C124 42 128 40 132 42 L140 48 C144 50 144 56 140 58 L132 62 C128 64 124 62 124 58 Z" fill="#1f1f2e"/>
-    <path d="M118 74 L138 74 L128 86 Z" fill="#f9f9f9"/>
+  <g fill="none" stroke="#0b1233" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M128 26 L156 70 L132 92 L150 118 L128 140 L106 118 L124 92 L100 70 Z" fill="url(#heroCore)"/>
+    <path d="M128 140 C146 166 156 194 156 220 L100 220 C100 194 110 166 128 140 Z" fill="#f5c78b"/>
+    <path d="M128 220 L168 244 L88 244 Z" fill="url(#heroJet)" stroke="#ff8c42" stroke-width="5"/>
+    <circle cx="128" cy="60" r="12" fill="#f5e6c7"/>
+    <path d="M118 56 C118 50 124 46 130 48 L148 54 C154 56 154 64 148 66 L130 72 C124 74 118 70 118 64 Z" fill="#0f1a33"/>
+    <path d="M118 96 L138 96 L128 110 Z" fill="#e8f4ff"/>
+    <path d="M128 140 L140 172 L116 172 Z" fill="#70c1ff"/>
   </g>
 </svg>
 `
@@ -27,16 +28,20 @@ export const enemySvg = `
 <svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="core" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#ff6b6b"/>
-      <stop offset="100%" stop-color="#ffa94d"/>
+      <stop offset="0%" stop-color="#ff9f43"/>
+      <stop offset="100%" stop-color="#ff4d6d"/>
+    </linearGradient>
+    <linearGradient id="wing" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d8e6ff"/>
+      <stop offset="100%" stop-color="#8ea7ff"/>
     </linearGradient>
   </defs>
-  <g fill="none" stroke="#0d0d16" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M32 138 L80 118 L128 126 L176 118 L224 138 L128 200 Z" fill="#dfe6f5"/>
-    <path d="M64 118 L128 86 L192 118 L128 150 Z" fill="#c2d4f2"/>
-    <circle cx="128" cy="126" r="26" fill="url(#core)" stroke="#222a4a" stroke-width="10"/>
-    <path d="M64 118 L92 126 L64 134 Z" fill="#9bb3f0"/>
-    <path d="M192 118 L164 126 L192 134 Z" fill="#9bb3f0"/>
+  <g fill="none" stroke="#0d0d16" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M32 150 L96 110 L128 124 L160 110 L224 150 L128 214 Z" fill="url(#wing)"/>
+    <path d="M70 116 L128 80 L186 116 L128 152 Z" fill="#c2cff7"/>
+    <circle cx="128" cy="128" r="26" fill="url(#core)" stroke="#1c2545" stroke-width="12"/>
+    <path d="M68 130 L96 136 L80 148 Z" fill="#9bb3f0"/>
+    <path d="M188 130 L160 136 L176 148 Z" fill="#9bb3f0"/>
   </g>
 </svg>
 `

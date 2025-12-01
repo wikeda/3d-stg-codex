@@ -17,6 +17,7 @@ export class Player {
   private fireCooldown = 0.15
   private fireTimer = 0
   private material: THREE.MeshBasicMaterial
+  private outline: THREE.Mesh
 
   constructor() {
     const geo = new THREE.PlaneGeometry(3, 3.6)
@@ -26,12 +27,20 @@ export class Player {
       side: THREE.DoubleSide,
     })
     this.mesh = new THREE.Mesh(geo, this.material)
+    this.outline = new THREE.Mesh(
+      geo.clone(),
+      new THREE.MeshBasicMaterial({ color: 0x0b0e1f, side: THREE.BackSide, transparent: true, opacity: 0.9 })
+    )
+    this.outline.scale.set(1.12, 1.12, 1)
+    this.outline.renderOrder = -1
+    this.mesh.add(this.outline)
     this.mesh.position.set(0, 0, 0)
   }
 
   setTexture(texture: THREE.Texture) {
     this.material.map = texture
     this.material.needsUpdate = true
+    this.outline.visible = true
   }
 
   faceCamera(camera: THREE.Camera) {

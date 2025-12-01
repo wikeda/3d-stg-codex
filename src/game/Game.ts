@@ -38,11 +38,12 @@ export class Game {
 
   constructor(sceneManager: SceneManager, hud: HUD) {
     this.sceneManager = sceneManager
-    this.input = new InputManager()
+    this.input = new InputManager(sceneManager.renderer.domElement.parentElement || document.body)
     const stage = this.getStage()
     this.background = new Background(this.sceneManager.scene, stage.ceiling)
     this.background.setSpeed(stage.gameSpeed)
     this.sceneManager.setBackgroundColor(stage.backgroundColor)
+    this.background.setGroundColor(stage.groundColor)
     this.player = new Player()
     this.sceneManager.scene.add(this.player.mesh)
     this.hud = hud
@@ -59,7 +60,10 @@ export class Game {
     this.elapsed += delta
     this.background.update(delta * stage.gameSpeed)
     this.sceneManager.setBackgroundColor(stage.backgroundColor)
+    this.background.setGroundColor(stage.groundColor)
     const inputState = this.input.getInputState()
+    const pointer = this.input.getPointerTarget()
+    this.player.moveToPointer(pointer, delta * stage.gameSpeed)
     this.player.update(delta * stage.gameSpeed, inputState)
     if (inputState.shoot) {
       const bullet = this.player.tryShoot()
@@ -264,9 +268,10 @@ export class Game {
     if (this.midBoss) this.sceneManager.scene.remove(this.midBoss.mesh)
     this.boss = null
     this.midBoss = null
-    this.background.enableCeiling(stage.ceiling)
+    this.background.enableCeiling(stage.ceiling, stage.ceilingColor)
     this.background.setSpeed(stage.gameSpeed)
     this.sceneManager.setBackgroundColor(stage.backgroundColor)
+    this.background.setGroundColor(stage.groundColor)
     this.hud.updateStage(stage.id)
     this.state = 'playing'
   }

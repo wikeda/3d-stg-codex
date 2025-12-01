@@ -19,6 +19,8 @@ export interface StageConfig {
   duration: number
   gameSpeed: number
   backgroundColor: number
+  groundColor: number
+  ceilingColor?: number
   ceiling: boolean
   boss: BossType
   midBoss?: BossType

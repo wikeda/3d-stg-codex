@@ -24,6 +24,15 @@ export class Player {
     this.mesh.position.set(0, 0, 0)
   }
 
+  moveToPointer(normalized: { x: number; y: number } | null, delta: number) {
+    if (!normalized) return
+    const targetX = normalized.x * 12
+    const targetY = normalized.y * 7
+    const lerpFactor = Math.min(1, delta * 8)
+    this.mesh.position.x = THREE.MathUtils.lerp(this.mesh.position.x, targetX, lerpFactor)
+    this.mesh.position.y = THREE.MathUtils.lerp(this.mesh.position.y, targetY, lerpFactor)
+  }
+
   update(delta: number, input: InputState) {
     const speed = 20
     this.mesh.position.x = THREE.MathUtils.clamp(this.mesh.position.x + input.moveX * speed * delta, -12, 12)

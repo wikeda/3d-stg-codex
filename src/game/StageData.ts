@@ -7,6 +7,7 @@ export const stageConfigs: StageConfig[] = [
     duration: 60,
     gameSpeed: 1.0,
     backgroundColor: 0x87ceeb,
+    groundColor: 0x2e8b57,
     ceiling: false,
     boss: 'BOSS1',
     spawn: {
@@ -24,6 +25,7 @@ export const stageConfigs: StageConfig[] = [
     duration: 90,
     gameSpeed: 1.5,
     backgroundColor: 0xff6347,
+    groundColor: 0xffa500,
     ceiling: false,
     boss: 'BOSS2',
     spawn: {
@@ -41,6 +43,8 @@ export const stageConfigs: StageConfig[] = [
     duration: 90,
     gameSpeed: 4.0,
     backgroundColor: 0x9370db,
+    groundColor: 0xff00ff,
+    ceilingColor: 0x0000ff,
     ceiling: true,
     boss: 'BOSS3',
     spawn: {
@@ -58,6 +62,7 @@ export const stageConfigs: StageConfig[] = [
     duration: 120,
     gameSpeed: 1.0,
     backgroundColor: 0xff1493,
+    groundColor: 0xff0000,
     ceiling: false,
     boss: 'BOSS4',
     midBoss: 'BOSS4H',
@@ -76,6 +81,8 @@ export const stageConfigs: StageConfig[] = [
     duration: 120,
     gameSpeed: 2.5,
     backgroundColor: 0x000080,
+    groundColor: 0x0000ff,
+    ceilingColor: 0xffff00,
     ceiling: true,
     boss: 'BOSS5',
     midBoss: 'BOSS5H',

@@ -9,9 +9,9 @@ export class SceneManager {
     this.scene = new THREE.Scene()
     this.scene.background = new THREE.Color(0x111122)
 
-    this.camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 500)
-    this.camera.position.set(0, 0, 20)
-    this.camera.lookAt(0, 0, 0)
+    this.camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 600)
+    this.camera.position.set(0, 4, 20)
+    this.camera.lookAt(0, 0, -60)
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
     this.renderer.shadowMap.enabled = true

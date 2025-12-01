@@ -1,10 +1,12 @@
 import * as THREE from 'three'
 import type { InputState } from '../types'
 import { Bullet } from './Bullet'
+import { loadSvgTexture } from '../assets/svgLoader'
+import { playerSvg } from '../assets/svg'
 
 export class Player {
   mesh: THREE.Mesh
-  radius = 1.5
+  radius = 1.2
   hp = 5
   maxHp = 5
   private invincibleTimer = 0
@@ -14,14 +16,26 @@ export class Player {
   private reloadDuration = 0.7
   private fireCooldown = 0.15
   private fireTimer = 0
+  private material: THREE.MeshBasicMaterial
 
   constructor() {
-    const geo = new THREE.ConeGeometry(1.5, 3, 6)
-    const mat = new THREE.MeshStandardMaterial({ color: 0x55ccff, emissive: 0x225577 })
-    this.mesh = new THREE.Mesh(geo, mat)
-    this.mesh.rotation.x = Math.PI
-    this.mesh.castShadow = true
+    const geo = new THREE.PlaneGeometry(3, 3.6)
+    this.material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      side: THREE.DoubleSide,
+    })
+    this.mesh = new THREE.Mesh(geo, this.material)
     this.mesh.position.set(0, 0, 0)
+  }
+
+  setTexture(texture: THREE.Texture) {
+    this.material.map = texture
+    this.material.needsUpdate = true
+  }
+
+  faceCamera(camera: THREE.Camera) {
+    this.mesh.quaternion.copy(camera.quaternion)
   }
 
   moveToPointer(normalized: { x: number; y: number } | null, delta: number) {
@@ -69,4 +83,12 @@ export class Player {
   heal(amount: number) {
     this.hp = Math.min(this.maxHp, this.hp + amount)
   }
+}
+
+export async function loadPlayerTexture() {
+  const tex = await loadSvgTexture(playerSvg)
+  tex.anisotropy = 8
+  tex.magFilter = THREE.LinearFilter
+  tex.minFilter = THREE.LinearMipMapLinearFilter
+  return tex
 }

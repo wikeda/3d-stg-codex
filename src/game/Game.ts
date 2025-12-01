@@ -13,6 +13,8 @@ import type { GameState, EnemyType, ObstacleType, StageConfig } from '../types'
 import { ScoreManager } from '../utils/ScoreManager'
 import { CollisionDetector } from '../utils/CollisionDetector'
 import { HUD } from '../ui/HUD'
+import { createEnemy as createEnemyFromFactory, loadEnemyResources, type EnemyFactoryResources } from './EnemyFactory'
+import { loadPlayerTexture } from './Player'
 
 export class Game {
   private sceneManager: SceneManager
@@ -35,6 +37,8 @@ export class Game {
   private elapsed = 0
   private score = new ScoreManager()
   private collision = new CollisionDetector()
+  private enemyResourcesLoaded = false
+  private enemyResources?: EnemyFactoryResources
 
   constructor(sceneManager: SceneManager, hud: HUD) {
     this.sceneManager = sceneManager
@@ -48,6 +52,15 @@ export class Game {
     this.sceneManager.scene.add(this.player.mesh)
     this.hud = hud
     this.hud.updateStage(stage.id)
+
+    // 遅延ロード：自機テクスチャと敵ジオメトリ
+    loadPlayerTexture().then((texture) => {
+      this.player.setTexture(texture)
+    })
+    loadEnemyResources().then((res) => {
+      this.enemyResources = res
+      this.enemyResourcesLoaded = true
+    })
   }
 
   private getStage(): StageConfig {
@@ -65,6 +78,7 @@ export class Game {
     const pointer = this.input.getPointerTarget()
     this.player.moveToPointer(pointer, delta * stage.gameSpeed)
     this.player.update(delta * stage.gameSpeed, inputState)
+    this.player.faceCamera(this.sceneManager.camera)
     if (inputState.shoot) {
       const bullet = this.player.tryShoot()
       if (bullet) {
@@ -84,7 +98,7 @@ export class Game {
   private spawnLogic(stage: StageConfig, delta: number) {
     this.enemyTimer -= delta
     this.obstacleTimer -= delta
-    if (stage.spawn.hasEnemies && this.enemyTimer <= 0 && !this.boss && !this.midBoss) {
+    if (this.enemyResourcesLoaded && stage.spawn.hasEnemies && this.enemyTimer <= 0 && !this.boss && !this.midBoss) {
       this.spawnEnemy(stage)
       this.enemyTimer = stage.spawn.enemyInterval
     }
@@ -102,8 +116,9 @@ export class Game {
   }
 
   private spawnEnemy(stage: StageConfig) {
+    if (!this.enemyResources) return
     const type = stage.spawn.enemyTypes[Math.floor(Math.random() * stage.spawn.enemyTypes.length)]
-    const enemy = createEnemy(type, stage.gameSpeed)
+    const enemy = createEnemyFromFactory(type, stage.gameSpeed, this.enemyResources)
     enemy.mesh.position.set(THREE.MathUtils.randFloat(-10, 10), THREE.MathUtils.randFloat(-3, 3), -100)
     this.enemies.push(enemy)
     this.sceneManager.scene.add(enemy.mesh)
@@ -300,60 +315,5 @@ function enemyScore(type: EnemyType) {
       return 200
     default:
       return 100
-  }
-}
-
-function createEnemy(type: EnemyType, stageSpeed: number) {
-  const material = new THREE.MeshStandardMaterial({ color: enemyColor(type as EnemyType), flatShading: true })
-  let geo: THREE.BufferGeometry
-  let hp = 1
-  let speed = 20 * stageSpeed
-  let radius = 1
-  switch (type) {
-    case 'A':
-      geo = new THREE.TetrahedronGeometry(1.1)
-      radius = 1.1
-      break
-    case 'B':
-      geo = new THREE.OctahedronGeometry(1.3)
-      radius = 1.2
-      break
-    case 'C':
-      geo = new THREE.DodecahedronGeometry(1.5)
-      hp = 2
-      radius = 1.4
-      break
-    case 'D':
-      geo = new THREE.BoxGeometry(1.2, 0.8, 1.2)
-      break
-    case 'E':
-      geo = new THREE.ConeGeometry(1, 2, 6)
-      break
-    case 'F':
-      geo = new THREE.TorusGeometry(1.2, 0.3, 8, 16)
-      radius = 1.3
-      break
-    default:
-      geo = new THREE.BoxGeometry(1, 1, 1)
-  }
-  return new Enemy(type, hp, radius, speed, geo, material)
-}
-
-function enemyColor(type: EnemyType) {
-  switch (type) {
-    case 'A':
-      return 0xff3333
-    case 'B':
-      return 0xff8800
-    case 'C':
-      return 0xff00aa
-    case 'D':
-      return 0x66ccff
-    case 'E':
-      return 0xffcc00
-    case 'F':
-      return 0x00ffaa
-    default:
-      return 0xffffff
   }
 }

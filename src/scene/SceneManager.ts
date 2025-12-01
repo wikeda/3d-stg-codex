@@ -8,6 +8,7 @@ export class SceneManager {
   constructor(container: HTMLElement) {
     this.scene = new THREE.Scene()
     this.scene.background = new THREE.Color(0x111122)
+    this.scene.fog = new THREE.Fog(0x87ceeb, 80, 240)
 
     this.camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 600)
     this.camera.position.set(0, 4, 20)
@@ -32,7 +33,9 @@ export class SceneManager {
   }
 
   setBackgroundColor(color: number) {
-    this.scene.background = new THREE.Color(color)
+    const c = new THREE.Color(color)
+    this.scene.background = c
+    this.scene.fog!.color = c
   }
 
   render() {
